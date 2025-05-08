@@ -8,10 +8,10 @@
 import Foundation
 
 class HomeViewModel: Observable {
+    // @ in CoreData
+    @Published var notes: [Note] = []
     
-    @Published var notes: [Note] = DataBaseManager.shared.notes
-    
-    func fetchTasks() {
+    func fetchNotes() {
         
     }
     
