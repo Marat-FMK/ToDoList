@@ -2,7 +2,7 @@
 //  Note+CoreDataClass.swift
 //  ToDoListTest
 //
-//  Created by Marat Fakhrizhanov on 08.05.2025.
+//  Created by Marat Fakhrizhanov on 09.05.2025.
 //
 //
 
@@ -20,16 +20,16 @@ extension Note {
         return NSFetchRequest<Note>(entityName: "Note")
     }
 
-    @NSManaged public var title: String?
-    @NSManaged public var text: String?
     @NSManaged public var completed: Bool
-    @NSManaged public var date: Date?
+    @NSManaged public var date: Date
+    @NSManaged public var text: String
+    @NSManaged public var title: String
 
 }
 
 extension Note : Identifiable {
-//    func deleteNote(){
-//        managedObjectContext?.delete(self)
-//        try? managedObjectContext?.save()
-//    }
+    //    func deleteNote(){
+    //        managedObjectContext?.delete(self)
+    //        try? managedObjectContext?.save()
+    //    }
 }
