@@ -9,7 +9,7 @@ import SwiftUI
 
 //struct NoteT {
 //    let text: String
-//    let tytle: String
+//    let title: String
 //    let completed: Bool
 //    let date: Date
 //}
@@ -29,9 +29,15 @@ struct NoteCell: View {
                     .foregroundStyle(note.completed ? .appCheckMark : .appText)
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(note.title ?? "")
-                        .foregroundStyle( note.completed ? .appDate : .appText)
-                        .lineLimit(1)
+                    if note.completed{
+                        Text("~\(note.title ?? "")~")
+                            .foregroundStyle( note.completed ? .appDate : .appText)
+                            .lineLimit(1)
+                    } else {
+                        Text(note.title ?? "")
+                            .foregroundStyle( note.completed ? .appDate : .appText)
+                            .lineLimit(1)
+                    }
                     Text(note.text ?? "")
                         .foregroundStyle( note.completed ? .appDate : .appText)
                         .lineLimit(2)
@@ -46,5 +52,5 @@ struct NoteCell: View {
 }
 
 //#Preview {
-//    NoteCell( note: Note, updateNoteCheckmark: { print("checkmark upload") })
+//    NoteCell(note: NoteT(text: "read book from use this description on you wrong jeep rubicon", title: "Read Book", completed: true, date: Date.now), updateNoteStatus: {})
 //}
