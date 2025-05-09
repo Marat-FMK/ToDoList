@@ -11,22 +11,43 @@ import CoreData
 final class DataBaseManager {
     
     static let shared = DataBaseManager()
-   
-    private init() { fetchNotes() } //??
-    var notes: [Note] = []
     
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer (name: "Note")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+    var context: NSManagedObjectContext {
+                   container.viewContext
+               }
+   
+    let container: NSPersistentContainer
+        
+    var notes: [Note] = []
+
+           private init() {
+               container = NSPersistentContainer(name: "Note")
+               container.loadPersistentStores { description, error in
+                   if let error = error {
+                       fatalError("Ошибка загрузки: \(error.localizedDescription)")
+                   }
+               }
+               
+               container.viewContext.automaticallyMergesChangesFromParent = true
+           }
+
+           
+    
+    
+    
+    
+//    lazy var persistentContainer: NSPersistentContainer = {
+//        let container = NSPersistentContainer (name: "Note")
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        return container
+//    }()
     
     func saveContext() {
-        let context = persistentContainer.viewContext
+        let context = context
         if context.hasChanges {
             do {
                 try context.save ()
@@ -42,7 +63,7 @@ final class DataBaseManager {
 extension DataBaseManager {
     
     func createNote(title: String, text: String) {
-        let note = Note(context: persistentContainer.viewContext)
+        let note = Note(context: context)
         note.title = title
         note.text = text
         note.date = Date.now
@@ -54,7 +75,7 @@ extension DataBaseManager {
         let request = Note.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         do {
-            let notes = try persistentContainer.viewContext.fetch(request)
+            let notes = try context.fetch(request)
             self.notes = notes
         } catch {
             print(error.localizedDescription)
@@ -67,8 +88,30 @@ extension DataBaseManager {
         saveContext()
     }
     
+    func updateNoteStatus(note: Note) {
+            let id = note.objectID
+            container.performBackgroundTask { ctx in
+                do {
+                    let noteInBackground = try ctx.existingObject(with: id) as? Note
+                    noteInBackground?.completed.toggle()
+                    try ctx.save()
+                    DispatchQueue.main.async {
+                                   let mainNote = try? self.context.existingObject(with: id) as? Note
+                                   mainNote.map { self.context.refresh($0, mergeChanges: true) }
+                               }
+                } catch {
+                    print("Ошибка обновления: \(error)")
+                }
+            }
+        }
+    
+//    func updateNoteStatus(note: Note) {
+//        note.completed.toggle()
+//        saveContext()
+//    }
+    
     func deleteNote(note: Note) {
-        let context = persistentContainer.viewContext
+        let context = context
         context.delete(note)
         saveContext()
     }
