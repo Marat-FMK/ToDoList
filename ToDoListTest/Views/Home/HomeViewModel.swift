@@ -9,21 +9,23 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     
-    @Published var notes: [Note] = []  // @ in CoreData or init
-    @Published var searchText: String = ""
+    @Published var notes: [Note] = []
     @Published var notesCount = 0
-    
+    @Published var searchText: String = ""
+    @Published var searchedNotes:[ Note] = []
     let db = DataBaseManager.shared
     
+    init() { fetchNotes() }
     
-    
-    
+    func fetchNotes() {
+        notes = db.notes
+    }
     
     func searchNote() {
         
     }
     
-    func updateNoteCompleted() {
+    func updateNoteStatus() {
         
     }
     

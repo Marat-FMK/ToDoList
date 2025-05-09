@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CustomSearchTextField: View {
+struct SearchTextField: View {
     @Binding var searchText: String
-    let search: ()-> Void
+    let search: () -> Void
     let activateRecord: () -> Void
     
     var body: some View {
@@ -29,7 +29,8 @@ struct CustomSearchTextField: View {
                 }
                 .buttonStyle(.plain)
                 
-                TextField(searchText == "" ? "Search" : searchText, text: $searchText)
+                TextField("", text: $searchText, prompt: Text(searchText == "" ? "Search" : searchText).foregroundStyle(.appDate))
+                    .foregroundStyle(.appDate)
                 
                 Button{
                     activateRecord()
@@ -49,5 +50,5 @@ struct CustomSearchTextField: View {
 }
 
 #Preview {
-    CustomSearchTextField(searchText: .constant("Уборка"), search: { print("start search") }, activateRecord: { print("start record")} )
+    SearchTextField(searchText: .constant(""), search: { print("start search") }, activateRecord: { print("start record")} )
 }

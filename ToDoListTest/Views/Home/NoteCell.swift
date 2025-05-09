@@ -16,7 +16,7 @@ import SwiftUI
 
 struct NoteCell: View {
     let note: Note
-    let updateNoteCheckmark: () -> Void
+    let updateNoteStatus: () -> Void
     
     var body: some View {
         Group {

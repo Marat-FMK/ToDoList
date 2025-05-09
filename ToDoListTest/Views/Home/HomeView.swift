@@ -20,17 +20,17 @@ struct HomeView: View {
                         .font(.system(size: 40))
                         .bold()
                     
-                    CustomSearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr)
+                    SearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr)
                     
                     ScrollView( showsIndicators: false) {
                         ForEach(viewModel.notes, id: \.date) { note in
-                            NoteCell(note: note, updateNoteCheckmark: viewModel.updateNoteCompleted)
+                            NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus)
                         }
                     }
                 }
                 .padding(.horizontal, 20)
                 
-                CustomBottomBar(notesCount: $viewModel.notesCount, presentDetail: $presentDetail)
+                BottomBar(notesCount: $viewModel.notesCount, presentDetail: $presentDetail)
             }
             .background(.appBackground)
         }

@@ -12,7 +12,7 @@ final class DataBaseManager {
     
     static let shared = DataBaseManager()
    
-    private init() { } //  func fetchNotes in init
+    private init() { fetchNotes() } //??
     var notes: [Note] = []
     
     lazy var persistentContainer: NSPersistentContainer = {

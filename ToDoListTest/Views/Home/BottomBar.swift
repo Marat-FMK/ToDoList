@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomBottomBar: View {
+struct BottomBar: View {
     @Binding var notesCount: Int
     @Binding var presentDetail : Bool
     
@@ -39,18 +39,6 @@ struct CustomBottomBar: View {
                         .foregroundStyle(.appCheckMark)
                 }
                 .padding(.trailing,20)
-
-//                Button{
-//                    presentDetail.toggle()
-//                } label: {
-//                    Image(systemName: "square.and.pencil")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 22)
-//                        .foregroundStyle(.appCheckMark)
-//                }
-//                .padding(.trailing,20)
-//                .buttonStyle(.plain)
             }
             .padding(.leading, 44)  // ??
             
@@ -63,5 +51,5 @@ struct CustomBottomBar: View {
 }
 
 #Preview {
-    CustomBottomBar(notesCount: .constant(7), presentDetail: .constant(false) )
+    BottomBar(notesCount: .constant(7), presentDetail: .constant(false) )
 }
