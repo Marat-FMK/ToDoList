@@ -9,7 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-    @State private var presentDetail = false
+//    @Environment(\.managedObjectContext) private var context
+    @FetchRequest(
+        entity: Note.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: true)]
+    ) var notes: FetchedResults<Note>
     
     var body: some View {
         NavigationStack {
@@ -22,15 +26,15 @@ struct HomeView: View {
                     
                     SearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr)
                     
-                    ScrollView( showsIndicators: false) {
-                        ForEach(viewModel.notes, id: \.date) { note in
+                    ScrollView {
+                        ForEach(notes) { note in
                             NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus)
                         }
                     }
                 }
                 .padding(.horizontal, 20)
                 
-                BottomBar(notesCount: $viewModel.notesCount, presentDetail: $presentDetail)
+                BottomBar(notesCount: notes.count)
             }
             .background(.appBackground)
         }

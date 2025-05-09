@@ -7,42 +7,42 @@
 
 import SwiftUI
 
-//struct NoteT {
-//    let text: String
-//    let title: String
-//    let completed: Bool
-//    let date: Date
-//}
 
 struct NoteCell: View {
-    let note: Note
-    let updateNoteStatus: () -> Void
+    @ObservedObject var note: Note
+    let updateNoteStatus: (Note) -> Void
     
     var body: some View {
         Group {
             HStack(alignment: .top, spacing: 10) {
-                
-                Image(systemName: note.completed ? "checkmark.circle" : "circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 22)
-                    .foregroundStyle(note.completed ? .appCheckMark : .appText)
-                
+                Button{
+                    updateNoteStatus(note)
+                } label: {
+                    Image(systemName: note.completed ? "checkmark.circle" : "circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 22)
+                        .foregroundStyle(note.completed ? .appCheckMark : .appText)
+                }
                 VStack(alignment: .leading, spacing: 5) {
                     if note.completed{
-                        Text("~\(note.title ?? "")~")
+                        Text("~\(note.title)~")
+                            .font(.system(size: 20))
+                            .bold()
                             .foregroundStyle( note.completed ? .appDate : .appText)
                             .lineLimit(1)
                     } else {
-                        Text(note.title ?? "")
+                        Text(note.title)
+                            .font(.system(size: 20))
+                            .bold()
                             .foregroundStyle( note.completed ? .appDate : .appText)
                             .lineLimit(1)
                     }
-                    Text(note.text ?? "")
+                    Text(note.text)
                         .foregroundStyle( note.completed ? .appDate : .appText)
                         .lineLimit(2)
-                    Text(String(note.date?.formatted() ?? "")) // ???
-                        .foregroundStyle( note.completed ? .appDate : .appText)
+                    Text(String(note.date.formatted()))
+                        .foregroundStyle(.appDate)
                 }
                 Spacer()
             }
@@ -50,7 +50,3 @@ struct NoteCell: View {
         }
     }
 }
-
-//#Preview {
-//    NoteCell(note: NoteT(text: "read book from use this description on you wrong jeep rubicon", title: "Read Book", completed: true, date: Date.now), updateNoteStatus: {})
-//}

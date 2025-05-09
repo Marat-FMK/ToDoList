@@ -46,6 +46,7 @@ struct SearchTextField: View {
             .padding(10)
         }
         .frame(height: 36)
+        .padding(.bottom, 10)
     }
 }
 

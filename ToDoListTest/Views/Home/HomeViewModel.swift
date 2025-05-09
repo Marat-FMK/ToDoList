@@ -6,30 +6,23 @@
 //
 
 import Foundation
+import SwiftUI
+import CoreData
 
 class HomeViewModel: ObservableObject {
-    
-    @Published var notes: [Note] = []
     @Published var notesCount = 0
     @Published var searchText: String = ""
     @Published var searchedNotes:[ Note] = []
     let db = DataBaseManager.shared
-    
-    init() { fetchNotes() }
-    
-    func fetchNotes() {
-        notes = db.notes
-    }
+
     
     func searchNote() {
         
     }
     
-    func updateNoteStatus() {
-        
+    func updateNoteStatus(note: Note) {
+        db.updateNoteStatus(note: note)
     }
-    
-    
     
     func startRecodr() {}
 }

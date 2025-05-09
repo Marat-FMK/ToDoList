@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ToDoListTestApp: App {
+    let db = DataBaseManager.shared
+    
     var body: some Scene {
         WindowGroup {
            HomeView()
+                .environment(\.managedObjectContext, db.context)
         }
     }
 }

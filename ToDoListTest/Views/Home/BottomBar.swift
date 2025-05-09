@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct BottomBar: View {
-    @Binding var notesCount: Int
-    @Binding var presentDetail : Bool
+    let notesCount: Int
+    @State var presentDetail = false
     
     var body: some View {
         Spacer()
@@ -30,7 +30,7 @@ struct BottomBar: View {
                 Spacer()
                 
                 NavigationLink {
-                    DetailView()
+                    DetailView(note: nil)
                 } label: {
                     Image(systemName: "square.and.pencil")
                         .resizable()
@@ -40,16 +40,12 @@ struct BottomBar: View {
                 }
                 .padding(.trailing,20)
             }
-            .padding(.leading, 44)  // ??
+            .padding(.leading, 44)
             
         }
         .foregroundStyle(.appBottomBar)
-        .zIndex(1)
         .ignoresSafeArea()
         .frame(height: 85)
+        .zIndex(1)
     }
-}
-
-#Preview {
-    BottomBar(notesCount: .constant(7), presentDetail: .constant(false) )
 }
