@@ -7,12 +7,27 @@
 
 import Foundation
 
-class HomeViewModel: Observable {
-    // @ in CoreData
-    @Published var notes: [Note] = []
+class HomeViewModel: ObservableObject {
     
-    func fetchNotes() {
+    @Published var notes: [Note] = []  // @ in CoreData or init
+    @Published var searchText: String = ""
+    @Published var notesCount = 0
+    
+    let db = DataBaseManager.shared
+    
+    
+    
+    
+    
+    func searchNote() {
         
     }
     
+    func updateNoteCompleted() {
+        
+    }
+    
+    
+    
+    func startRecodr() {}
 }
