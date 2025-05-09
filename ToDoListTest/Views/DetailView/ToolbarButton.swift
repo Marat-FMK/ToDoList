@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct ToolbarButton: View {
+    let title: String
+    let imageName: String
+    let visible: Bool
+    let action: () -> Void
+    let dismiss: DismissAction
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        if visible {
+            Button {
+                action()
+                dismiss()
+            } label: {
+                HStack {
+                    Image(systemName: imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 22)
+                    Text(title)
+                        .font(.system(size: 17))
+                }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.appCheckMark)
+        }
     }
-}
-
-#Preview {
-    ToolbarButton()
 }
