@@ -10,6 +10,6 @@ import SwiftUI
 
 class LounchControl {
     
-    @AppStorage("firstDownload") var firstDownload = true
-//    @AppStorage("onboarding") var onboarding = true
+    @AppStorage("firstDownload") var firstDownload = false
+//    @AppStorage("onboarding") var onboarding = false
 }
