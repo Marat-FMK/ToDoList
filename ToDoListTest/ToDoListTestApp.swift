@@ -17,7 +17,7 @@ struct ToDoListTestApp: App {
             HomeView()
                 .environment(\.managedObjectContext, db.context)
                 .onAppear {
-                    if lounchControl.firstDownload {
+                    if !lounchControl.firstDownload {
                         let _ = NetworkManager()
                     }
                 }
