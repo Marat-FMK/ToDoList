@@ -16,8 +16,6 @@ final class DataBaseManager {
     var context: NSManagedObjectContext {
                    container.viewContext
                }
-   
-//    var notes: [Note] = []
 
     private init() {
                container = NSPersistentContainer(name: "Note")
@@ -52,7 +50,7 @@ extension DataBaseManager {
         note.title = title
         note.text = text
         note.date = Date.now
-        note.completed = false
+        note.completed = status
         saveContext()
     }
     
