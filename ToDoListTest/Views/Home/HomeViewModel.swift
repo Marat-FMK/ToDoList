@@ -12,16 +12,20 @@ import CoreData
 class HomeViewModel: ObservableObject {
     @Published var notesCount = 0
     @Published var searchText: String = ""
-    @Published var searchedNotes:[ Note] = []
+    @Published var searchedNotes: [Note] = []
     let db = DataBaseManager.shared
-
     
     func searchNote() {
-        
+        self.searchedNotes = db.searchNote(text: searchText)
     }
     
     func updateNoteStatus(note: Note) {
         db.updateNoteStatus(note: note)
+    }
+    
+    func clearSearchText() {
+        searchText = ""
+        searchedNotes = []
     }
     
     func startRecodr() {}

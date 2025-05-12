@@ -9,10 +9,9 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-//    @Environment(\.managedObjectContext) private var context
     @FetchRequest(
         entity: Note.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: true)]
+        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)]
     ) var notes: FetchedResults<Note>
     
     var body: some View {
@@ -24,11 +23,17 @@ struct HomeView: View {
                         .font(.system(size: 40))
                         .bold()
                     
-                    SearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr)
+                    SearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr, clearSearchText: viewModel.clearSearchText)
                     
                     ScrollView {
-                        ForEach(notes) { note in
-                            NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus)
+                        if viewModel.searchedNotes.isEmpty && viewModel.searchText.isEmpty {
+                            ForEach(notes) { note in
+                                NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus)
+                            }
+                        } else {
+                            ForEach(viewModel.searchedNotes) { note in
+                                NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus)
+                            }
                         }
                     }
                 }

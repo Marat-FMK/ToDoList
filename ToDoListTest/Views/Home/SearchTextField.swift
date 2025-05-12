@@ -11,6 +11,7 @@ struct SearchTextField: View {
     @Binding var searchText: String
     let search: () -> Void
     let activateRecord: () -> Void
+    let clearSearchText: () -> Void
     
     var body: some View {
         ZStack{
@@ -31,6 +32,22 @@ struct SearchTextField: View {
                 
                 TextField("", text: $searchText, prompt: Text(searchText == "" ? "Search" : searchText).foregroundStyle(.appDate))
                     .foregroundStyle(.appDate)
+                    .onChange(of: searchText) {
+                        search()
+                    }
+                
+                if !searchText.isEmpty {
+                    Button {
+                        clearSearchText()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22)
+                            .foregroundStyle(.appDate)
+                    }
+                    .buttonStyle(.plain)
+                }
                 
                 Button{
                     activateRecord()
@@ -51,5 +68,5 @@ struct SearchTextField: View {
 }
 
 #Preview {
-    SearchTextField(searchText: .constant(""), search: { print("start search") }, activateRecord: { print("start record")} )
+    SearchTextField(searchText: .constant(""), search: { print("start search") }, activateRecord: { print("start record")}, clearSearchText: { print ("clear text")} )
 }
