@@ -12,15 +12,14 @@ final class DataBaseManager {
     
     static let shared = DataBaseManager()
     
+    let container: NSPersistentContainer
     var context: NSManagedObjectContext {
                    container.viewContext
                }
    
-    let container: NSPersistentContainer
-        
-    var notes: [Note] = []
+//    var notes: [Note] = []
 
-           private init() {
+    private init() {
                container = NSPersistentContainer(name: "Note")
                container.loadPersistentStores { description, error in
                    if let error = error {
@@ -47,8 +46,9 @@ final class DataBaseManager {
 //MARK: - CRUD
 extension DataBaseManager {
     
-    func createNote(title: String, text: String) {
+    func createNote(title: String, text: String, status: Bool = false) {
         let note = Note(context: context)
+        note.id = UUID()
         note.title = title
         note.text = text
         note.date = Date.now
@@ -56,16 +56,16 @@ extension DataBaseManager {
         saveContext()
     }
     
-    func fetchNotes() {
-        let request = Note.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-        do {
-            let notes = try context.fetch(request)
-            self.notes = notes
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+//    func fetchNotes() {
+//        let request = Note.fetchRequest()
+//        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+//        do {
+//            let notes = try context.fetch(request)
+//            self.notes = notes
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
     
     func updateNote(note: Note, newTitle: String = "", newText: String = "") {
         note.title = newTitle
@@ -75,11 +75,11 @@ extension DataBaseManager {
     
     func updateNoteStatus(note: Note) {
             let id = note.objectID
-            container.performBackgroundTask { ctx in
+            container.performBackgroundTask { context in
                 do {
-                    let noteInBackground = try ctx.existingObject(with: id) as? Note
+                    let noteInBackground = try context.existingObject(with: id) as? Note
                     noteInBackground?.completed.toggle()
-                    try ctx.save()
+                    try context.save()
                     DispatchQueue.main.async {
                                    let mainNote = try? self.context.existingObject(with: id) as? Note
                                    mainNote.map { self.context.refresh($0, mergeChanges: true) }
@@ -90,16 +90,27 @@ extension DataBaseManager {
             }
         }
     
-//    func updateNoteStatus(note: Note) {
-//        note.completed.toggle()
-//        saveContext()
-//    }
-    
     func deleteNote(note: Note) {
         let context = context
         context.delete(note)
         saveContext()
     }
+    
+    func searchNote(text: String) -> [Note] {
+        let request: NSFetchRequest<Note> = Note.fetchRequest()
+        
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@ OR text CONTAINS[cd] %@", text, text)
+        request.predicate = predicate
+        
+        do {
+            let foundNotes = try context.fetch(request)
+            return foundNotes
+        } catch {
+            print("Ошибка поиска: \(error)")
+            return []
+        }
+    }
+    
 }
 
                                        
