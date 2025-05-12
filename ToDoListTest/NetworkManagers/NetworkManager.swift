@@ -8,14 +8,16 @@
 import Foundation
 import SwiftUI
 
-class NetworkManager {
+final class NetworkManager {
     
-    let link: String = "https://dummyjson.com/todos"
-    var apiNotes: [ApiNote] = []
+    private let link: String = "https://dummyjson.com/todos"
+    private var notes: [ApiNote] = []
+    private let db = DataBaseManager.shared
+    private let lounchControl = LounchControl()
     
     init() { fetchNotes() }
     
-    func fetchNotes() {
+    private func fetchNotes() {
         guard let url = URL(string: link) else { print("bad URL error"); return }
         
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
@@ -23,10 +25,17 @@ class NetworkManager {
             guard let data = data else { print("no data"); return }
             
             do {
-                let notes = try JSONDecoder().decode(ApiNotes.self, from: data)
+                let response = try JSONDecoder().decode(ApiNotes.self, from: data)
                 DispatchQueue.main.async {
-                    print("Api notes --- >>>",notes.todos)
-                    self.apiNotes = notes.todos
+                    let notes = response.todos
+                    self.notes = notes
+                    print("Api notes --- >>>",notes)
+                    
+                    // add apiNotes in CoreData
+                    for note in self.notes {
+                        self.db.createNote(title: "Заметка из сети", text: note.todo, status: note.completed)
+                    }
+                    self.lounchControl.firstDownload = false
                 }
             } catch {
                 print("decode error")
