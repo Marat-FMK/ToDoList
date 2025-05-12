@@ -9,12 +9,18 @@ import SwiftUI
 
 @main
 struct ToDoListTestApp: App {
+    let lounchControl = LounchControl()
     let db = DataBaseManager.shared
     
     var body: some Scene {
         WindowGroup {
-           HomeView()
+            HomeView()
                 .environment(\.managedObjectContext, db.context)
+                .onAppear {
+                    if lounchControl.firstDownload {
+                        let _ = NetworkManager()
+                    }
+                }
         }
     }
 }
