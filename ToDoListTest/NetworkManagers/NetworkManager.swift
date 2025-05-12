@@ -11,9 +11,6 @@ import SwiftUI
 final class NetworkManager {
     
     private let link: String = "https://dummyjson.com/todos"
-    private var notes: [ApiNote] = []
-    private let db = DataBaseManager.shared
-    private let lounchControl = LounchControl()
     
     init() { fetchNotes() }
     
@@ -28,14 +25,8 @@ final class NetworkManager {
                 let response = try JSONDecoder().decode(ApiNotes.self, from: data)
                 DispatchQueue.main.async {
                     let notes = response.todos
-                    self.notes = notes
                     print("Api notes --- >>>",notes)
-                    
-                    // add apiNotes in CoreData
-                    for note in self.notes {
-                        self.db.createNote(title: "Заметка из сети", text: note.todo, status: note.completed)
-                    }
-                    self.lounchControl.firstDownload = false
+                    StorageManager.shared.saveApiNotesInCoreData(notes: notes)
                 }
             } catch {
                 print("decode error")
