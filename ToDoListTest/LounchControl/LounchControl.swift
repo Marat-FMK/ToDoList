@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
+
+class LounchControl {
+    
+    @AppStorage("firstDownload") var firstDownload = true
+//    @AppStorage("onboarding") var onboarding = true
+}
