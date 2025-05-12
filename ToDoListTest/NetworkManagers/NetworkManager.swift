@@ -9,10 +9,12 @@ import Foundation
 import SwiftUI
 
 class NetworkManager {
+    
     let link: String = "https://dummyjson.com/todos"
     var apiNotes: [ApiNote] = []
     
     init() { fetchNotes() }
+    
     func fetchNotes() {
         guard let url = URL(string: link) else { print("bad URL error"); return }
         
@@ -31,4 +33,5 @@ class NetworkManager {
             }
         }.resume()
     }
+    
 }
