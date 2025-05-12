@@ -17,19 +17,43 @@ struct DetailView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            TextField("", text: $viewModel.title, prompt: Text("Заголовок").foregroundStyle(.appDate))
-                .foregroundStyle(.appText)
-                .font(.system(size: 40))
-                .bold()
-            Text(viewModel.note?.date.formatted() ?? Date.now.formatted())
+            TextField("", text: $viewModel.title,
+                      prompt: Text("Введите заголовок")
+                .foregroundStyle(.appDate)
+                .font(.system(size: 25))
+            )
+            .foregroundStyle(.appText)
+            .font(.system(size: 30))
+            .bold()
+            .padding(10)
+            .overlay {
+                RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
+            }
+            
+            Text("Время создания: \(viewModel.note?.date.formatted() ?? Date.now.formatted())")
                 .foregroundStyle(.appDate)
                 .font(.system(size: 17))
-            TextEditor(text: $viewModel.text)
-                .background(.appBackground)
-                .foregroundStyle(.appText)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            ZStack(alignment: .topLeading) {
+                if viewModel.text.isEmpty {
+                    Text("Введите текст")
+                        .foregroundStyle(.appDate)
+                        .font(.system(size: 25))
+                        .padding(10)
+                        .zIndex(1)
+                }
+                TextEditor(text: $viewModel.text)
+                    .scrollContentBackground(.hidden)
+                    .foregroundStyle(.appText)
+                    .background(.appBackground)
+                    .padding(10)
+                    
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
+            }
         }
-        .padding(.horizontal,20)
+        .padding(.horizontal, 20)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -47,7 +71,6 @@ struct DetailView: View {
                               action: viewModel.createNote,
                               dismiss: dismiss)
             }
-            
         }
     }
 }
