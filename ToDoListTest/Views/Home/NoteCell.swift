@@ -11,6 +11,7 @@ import SwiftUI
 struct NoteCell: View {
     @ObservedObject var note: Note
     let updateNoteStatus: (Note) -> Void
+    let selectNote: (Note) -> Void
     
     var body: some View {
         Group {
@@ -41,8 +42,13 @@ struct NoteCell: View {
                     Text(note.text)
                         .foregroundStyle( note.completed ? .appDate : .appText)
                         .lineLimit(2)
-                    Text(String(note.date.formatted()))
+                    Text(String(note.date?.formatted(date: .complete, time: .omitted) ?? "no date"))
                         .foregroundStyle(.appDate)
+                }
+                .onTapGesture {
+                    withAnimation {
+                        selectNote(note)
+                    }
                 }
                 Spacer()
             }
