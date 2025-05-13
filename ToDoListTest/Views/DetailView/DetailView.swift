@@ -30,7 +30,7 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
             
-            Text("Время создания: \(viewModel.note?.date.formatted() ?? Date.now.formatted())")
+            Text("Время создания: \(viewModel.note?.date?.formatted() ?? Date.now.formatted())")
                 .foregroundStyle(.appDate)
                 .font(.system(size: 17))
             
