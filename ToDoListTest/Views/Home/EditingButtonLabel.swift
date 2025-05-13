@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct EditingButtonLabel: View {
+    let title: String
+    let imageName: String
+    let color: Color
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Text(title)
+                .font(.system(size: 20))
+            Spacer()
+            Image(systemName: imageName)
+        }
+        .foregroundStyle(color)
     }
-}
-
-#Preview {
-    EditingButtonLabel()
 }
