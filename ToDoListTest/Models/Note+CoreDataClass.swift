@@ -2,7 +2,7 @@
 //  Note+CoreDataClass.swift
 //  ToDoListTest
 //
-//  Created by Marat Fakhrizhanov on 12.05.2025.
+//  Created by Marat Fakhrizhanov on 13.05.2025.
 //
 //
 
@@ -21,10 +21,10 @@ extension Note {
     }
 
     @NSManaged public var completed: Bool
-    @NSManaged public var date: Date
-    @NSManaged public var text: String
-    @NSManaged public var title: String
-    @NSManaged public var id: UUID
+    @NSManaged public var date: Date?
+    @NSManaged public var id: UUID?
+    @NSManaged public var text: String?
+    @NSManaged public var title: String?
 
 }
 

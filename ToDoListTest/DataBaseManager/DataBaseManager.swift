@@ -24,7 +24,6 @@ final class DataBaseManager {
                        fatalError("Ошибка загрузки: \(error.localizedDescription)")
                    }
                }
-               
                container.viewContext.automaticallyMergesChangesFromParent = true
            }
     
@@ -88,10 +87,30 @@ extension DataBaseManager {
             }
         }
     
+//    func deleteNote(note: Note) {
+//        let context = context
+//        context.delete(note)
+//        saveContext()
+//    }
+    
     func deleteNote(note: Note) {
-        let context = context
-        context.delete(note)
-        saveContext()
+        let objectID = note.objectID
+        container.performBackgroundTask { backgroundContext in
+            do {
+                let noteToDelete = try backgroundContext.existingObject(with: objectID)
+                backgroundContext.delete(noteToDelete)
+                try backgroundContext.save()
+
+                // Обновляем main context
+                DispatchQueue.main.async {
+                    if let mainNote = try? self.context.existingObject(with: objectID) {
+                        self.context.refresh(mainNote, mergeChanges: false)
+                    }
+                }
+            } catch {
+                print("Ошибка удаления: \(error)")
+            }
+        }
     }
     
     func searchNote(text: String) -> [Note] {
