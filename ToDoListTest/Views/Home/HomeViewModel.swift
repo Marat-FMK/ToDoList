@@ -15,7 +15,7 @@ class HomeViewModel: ObservableObject {
     @Published var searchedNotes: [Note] = []
     @Published var selectedNote: Note?
     @Published var blurValue = 0
-    @Published var editing = false
+//    @Published var editing = false
     let db = DataBaseManager.shared
     
     
@@ -26,13 +26,13 @@ class HomeViewModel: ObservableObject {
     
     func selectNote(note: Note) {
         selectedNote = note
-        editing = true
+//        editing = true
         blurValue = 20
     }
     
     func clearSelectNote() {
         selectedNote = nil
-        editing = false
+//        editing = false
         blurValue = 0
     }
     

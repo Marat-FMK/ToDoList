@@ -10,20 +10,26 @@ import SwiftUI
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     @Environment(\.managedObjectContext) private var context
+//    @FetchRequest(
+//        entity: Note.entity(),
+//        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)]
+//    ) var notes: FetchedResults<Note>
+    
     @FetchRequest(
         entity: Note.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)]
+        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)],
+        animation: .bouncy(duration: 0.2, extraBounce: 0.4)
     ) var notes: FetchedResults<Note>
     
     var body: some View {
         NavigationStack {
             ZStack {
-                if viewModel.editing {
+//                if viewModel.editing {
                     if let note = viewModel.selectedNote {
-                        NoteEditing(note: note, deleteNote: viewModel.deleteNote)
-                            .zIndex(1)
+                        NoteEditing(noteID: note.objectID, deleteNote: viewModel.deleteNote, deleteSelectNote: viewModel.clearSelectNote)
+                                .zIndex(1)
                     }
-                }
+//                }
                     VStack {
                         VStack(alignment: .leading) {
                             Text("Задачи")
@@ -47,8 +53,9 @@ struct HomeView: View {
                         }
                         .padding(.horizontal, 20)
                         
-                        BottomBar(notesCount: notes.count)
+                        BottomBar(notesCount: notes.count, deleteSelectNote: viewModel.clearSelectNote)
                     }
+                    .navigationBarBackButtonHidden()
                     .background(.appBackground)
                     .blur(radius: CGFloat(viewModel.blurValue))
                 
