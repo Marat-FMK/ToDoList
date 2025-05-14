@@ -93,23 +93,41 @@ extension DataBaseManager {
 //        saveContext()
 //    }
     
+//    func deleteNote(note: Note) {
+//        let objectID = note.objectID
+//        container.performBackgroundTask { backgroundContext in
+//            do {
+//                let noteToDelete = try backgroundContext.existingObject(with: objectID)
+//                backgroundContext.delete(noteToDelete)
+//                try backgroundContext.save()
+//
+//                // Обновляем main context
+//                DispatchQueue.main.async {
+//                    if let mainNote = try? self.context.existingObject(with: objectID) {
+//                        self.context.refresh(mainNote, mergeChanges: false)
+//                    }
+//                }
+//            } catch {
+//                print("Ошибка удаления: \(error)")
+//            }
+//        }
+//    }
+    
     func deleteNote(note: Note) {
-        let objectID = note.objectID
-        container.performBackgroundTask { backgroundContext in
+        let id = note.objectID
+        container.performBackgroundTask { context in
             do {
-                let noteToDelete = try backgroundContext.existingObject(with: objectID)
-                backgroundContext.delete(noteToDelete)
-                try backgroundContext.save()
-
-                // Обновляем main context
-                DispatchQueue.main.async {
-                    if let mainNote = try? self.context.existingObject(with: objectID) {
-                        self.context.refresh(mainNote, mergeChanges: false)
-                    }
+                if let noteToDelete = try? context.existingObject(with: id) {
+                    context.delete(noteToDelete)
+                    try context.save()
                 }
             } catch {
                 print("Ошибка удаления: \(error)")
             }
+        }
+
+        DispatchQueue.main.async {
+            self.context.refreshAllObjects() // Обновить состояние
         }
     }
     
