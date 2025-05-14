@@ -10,9 +10,11 @@ import SwiftUI
 struct DetailView: View {
     @StateObject var viewModel: DetailViewModel
     @Environment(\.dismiss) var dismiss
+    let deleteSelectNote: () -> Void
     
-    init(note: Note?) {
+    init(note: Note?, deleteSelectNote: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: DetailViewModel(note: note) )
+        self.deleteSelectNote = deleteSelectNote
     }
     
     var body: some View {
@@ -53,23 +55,34 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
         }
-        .padding(.horizontal, 20)
+//        .onDisappear(perform: deleteSelectNote)
+        .padding(20)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                ToolbarButton(title: "Назад",
-                              imageName: "chevron.left",
-                              visible: true,
-                              action: viewModel.updateNote,
-                              dismiss: dismiss)
+                //                ToolbarButton(title: "Назад", imageName: "chevron.left", action: {}, dismiss: dismiss)
+                NavigationLink {
+                    HomeView()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 22, height: 22)
+                        Text("K заметкам")
+                            .font(.system(size: 22))
+                    }
+                    .foregroundStyle(.appCheckMark)
+                }
+
             }
             ToolbarItem(placement: .topBarTrailing) {
-                ToolbarButton(title: "Сохранить",
-                              imageName: "square.and.arrow.down",
-                              visible: (viewModel.note != nil) ? false : true,
-                              action: viewModel.createNote,
-                              dismiss: dismiss)
+                if viewModel.note == nil {
+                    ToolbarButton(title: "Сохранить", imageName: "square.and.arrow.down", action: viewModel.createNote, deleteSelectNote: deleteSelectNote, dismiss: dismiss)
+                } else {
+                    ToolbarButton(title: "Обновить", imageName: "square.and.arrow.down", action: viewModel.updateNote, deleteSelectNote: deleteSelectNote, dismiss: dismiss)
+                }
             }
         }
     }
