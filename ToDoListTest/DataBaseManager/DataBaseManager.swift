@@ -21,7 +21,7 @@ final class DataBaseManager {
                container = NSPersistentContainer(name: "Note")
                container.loadPersistentStores { description, error in
                    if let error = error {
-                       fatalError("Ошибка загрузки: \(error.localizedDescription)")
+                       fatalError("Error -loading: \(error.localizedDescription)")
                    }
                }
                container.viewContext.automaticallyMergesChangesFromParent = true
@@ -34,7 +34,7 @@ final class DataBaseManager {
                 try context.save ()
             } catch {
                 let nserror = error as NSError
-                fatalError("Unresolved error \(error), \(nserror.userInfo)")
+                fatalError("Error - unresolved error to saveContext \(error), \(nserror.userInfo)")
             }
         }
     }
@@ -52,17 +52,6 @@ extension DataBaseManager {
         note.completed = status
         saveContext()
     }
-    
-//    func fetchNotes() {
-//        let request = Note.fetchRequest()
-//        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
-//        do {
-//            let notes = try context.fetch(request)
-//            self.notes = notes
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
     
     func updateNote(note: Note, newTitle: String = "", newText: String = "") {
         note.title = newTitle
@@ -82,36 +71,10 @@ extension DataBaseManager {
                                    mainNote.map { self.context.refresh($0, mergeChanges: true) }
                                }
                 } catch {
-                    print("Ошибка обновления: \(error)")
+                    print("Error - error update status \(error)")
                 }
             }
         }
-    
-//    func deleteNote(note: Note) {
-//        let context = context
-//        context.delete(note)
-//        saveContext()
-//    }
-    
-//    func deleteNote(note: Note) {
-//        let objectID = note.objectID
-//        container.performBackgroundTask { backgroundContext in
-//            do {
-//                let noteToDelete = try backgroundContext.existingObject(with: objectID)
-//                backgroundContext.delete(noteToDelete)
-//                try backgroundContext.save()
-//
-//                // Обновляем main context
-//                DispatchQueue.main.async {
-//                    if let mainNote = try? self.context.existingObject(with: objectID) {
-//                        self.context.refresh(mainNote, mergeChanges: false)
-//                    }
-//                }
-//            } catch {
-//                print("Ошибка удаления: \(error)")
-//            }
-//        }
-//    }
     
     func deleteNote(note: Note) {
         let id = note.objectID
@@ -122,12 +85,11 @@ extension DataBaseManager {
                     try context.save()
                 }
             } catch {
-                print("Ошибка удаления: \(error)")
+                print("Error - deleteNote \(error)")
             }
         }
-
         DispatchQueue.main.async {
-            self.context.refreshAllObjects() // Обновить состояние
+            self.context.refreshAllObjects()
         }
     }
     
@@ -141,7 +103,7 @@ extension DataBaseManager {
             let foundNotes = try context.fetch(request)
             return foundNotes
         } catch {
-            print("Ошибка поиска: \(error)")
+            print("Error - searchNote \(error)")
             return []
         }
     }

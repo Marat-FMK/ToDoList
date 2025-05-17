@@ -29,8 +29,4 @@ extension Note {
 }
 
 extension Note : Identifiable {
-    //    func deleteNote(){
-    //        managedObjectContext?.delete(self)
-    //        try? managedObjectContext?.save()
-    //    }
 }
