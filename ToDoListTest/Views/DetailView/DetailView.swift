@@ -10,11 +10,9 @@ import SwiftUI
 struct DetailView: View {
     @StateObject var viewModel: DetailViewModel
     @Environment(\.dismiss) var dismiss
-    let deleteSelectNote: () -> Void
     
-    init(note: Note?, deleteSelectNote: @escaping () -> Void) {
+    init(note: Note?) {
         _viewModel = StateObject(wrappedValue: DetailViewModel(note: note) )
-        self.deleteSelectNote = deleteSelectNote
     }
     
     var body: some View {
@@ -55,34 +53,16 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
         }
-//        .onDisappear(perform: deleteSelectNote)
+        .onDisappear(perform: viewModel.updateNote)
         .padding(20)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                //                ToolbarButton(title: "Назад", imageName: "chevron.left", action: {}, dismiss: dismiss)
-                NavigationLink {
-                    HomeView()
-                } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 22, height: 22)
-                        Text("K заметкам")
-                            .font(.system(size: 22))
-                    }
-                    .foregroundStyle(.appCheckMark)
-                }
-
+                ToolbarButton(destiny: .back, title: "К заметкам", save: {}, dismiss: dismiss)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                if viewModel.note == nil {
-                    ToolbarButton(title: "Сохранить", imageName: "square.and.arrow.down", action: viewModel.createNote, deleteSelectNote: deleteSelectNote, dismiss: dismiss)
-                } else {
-                    ToolbarButton(title: "Обновить", imageName: "square.and.arrow.down", action: viewModel.updateNote, deleteSelectNote: deleteSelectNote, dismiss: dismiss)
-                }
+                ToolbarButton(destiny: .save, title: "Сохранить", save: viewModel.createNote, dismiss: dismiss)
             }
         }
     }

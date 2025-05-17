@@ -15,11 +15,11 @@ final class NetworkManager {
     init() { fetchNotes() }
     
     private func fetchNotes() {
-        guard let url = URL(string: link) else { print("bad URL error"); return }
+        guard let url = URL(string: link) else { print("Error - bad url"); return }
         
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
-            guard error == nil else { print("request error"); return }
-            guard let data = data else { print("no data"); return }
+            guard error == nil else { print("Error - request"); return }
+            guard let data = data else { print("Error - no data"); return }
             
             do {
                 let response = try JSONDecoder().decode(ApiNotes.self, from: data)
@@ -29,7 +29,7 @@ final class NetworkManager {
                     StorageManager.shared.saveApiNotesInCoreData(notes: notes)
                 }
             } catch {
-                print("decode error")
+                print("Error -decode error")
             }
         }.resume()
     }

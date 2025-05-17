@@ -7,31 +7,31 @@
 
 import SwiftUI
 
-
+enum ButtonDestiny {
+    case back
+    case save
+}
 
 struct ToolbarButton: View {
+    let destiny: ButtonDestiny
     let title: String
-    let imageName: String
-    let action: () -> Void
-    let deleteSelectNote: () -> Void
+    let save: () -> Void
     let dismiss: DismissAction
     
     var body: some View {
-        Button {
-            action()
-            deleteSelectNote()
-            dismiss()
-        } label: {
-            HStack(alignment: .center) {
-                Image(systemName: imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 22)
-                Text(title)
-                    .font(.system(size: 22))
+            Button {
+                if destiny == .save {
+                    save()
+                    dismiss()
+                } else {
+                        dismiss()
+                    }
+            } label: {
+                    Text(title)
+                        .font(.system(size: 22))
             }
+            .buttonStyle(.plain)
+            .foregroundStyle(.appCheckMark)
         }
-        .buttonStyle(.plain)
-        .foregroundStyle(.appCheckMark)
     }
-}
+
