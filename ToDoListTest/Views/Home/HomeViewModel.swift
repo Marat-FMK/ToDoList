@@ -5,17 +5,16 @@
 //  Created by Marat Fakhrizhanov on 08.05.2025.
 //
 
-import Foundation
 import SwiftUI
 import CoreData
 
 class HomeViewModel: ObservableObject {
+    @Environment(\.managedObjectContext) private var context
     @Published var notesCount = 0
     @Published var searchText: String = ""
     @Published var searchedNotes: [Note] = []
     @Published var selectedNote: Note?
     @Published var blurValue = 0
-//    @Published var editing = false
     let db = DataBaseManager.shared
     
     
@@ -26,14 +25,13 @@ class HomeViewModel: ObservableObject {
     
     func selectNote(note: Note) {
         selectedNote = note
-//        editing = true
         blurValue = 20
     }
     
     func clearSelectNote() {
         selectedNote = nil
-//        editing = false
         blurValue = 0
+        print("clear selectNote")
     }
     
     func startRecodr() {}
@@ -52,7 +50,7 @@ class HomeViewModel: ObservableObject {
         withAnimation {
             clearSelectNote()
             db.deleteNote(note: note)
-//            searchedNotes.removeAll { $0.objectID == id }
         }
     }
+ 
 }

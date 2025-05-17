@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct NoteEditingButtons: View {
     @ObservedObject var note: Note
     let deleteNote: (Note) -> Void
@@ -17,12 +15,6 @@ struct NoteEditingButtons: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-//            NavigationLink {
-//                DetailView(note: note, deleteSelectNote: deleteSelectNote)
-//            } label: {
-//                EditingButtonLabel(title: "Редактировать", imageName: "square.and.pencil", color: .black)
-//            }
-            
             Button {
                 presentDetail.toggle()
             } label: {
@@ -41,9 +33,9 @@ struct NoteEditingButtons: View {
                 EditingButtonLabel(title: "Удалить", imageName: "trash", color: .red)
             }
         }
-        .sheet(isPresented: $presentDetail, onDismiss: withAnimation(.bouncy) { deleteSelectNote }, content: {
-            DetailView(note: note, deleteSelectNote: deleteSelectNote)
-        })
+        .sheet(isPresented: $presentDetail,
+               onDismiss: withAnimation(.bouncy) { deleteSelectNote },
+               content: { DetailView(note: note) })
         .padding(20)
         .background {
             RoundedRectangle(cornerRadius: 16).foregroundStyle(.appSearchItems)

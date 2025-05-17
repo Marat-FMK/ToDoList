@@ -9,12 +9,6 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-    @Environment(\.managedObjectContext) private var context
-//    @FetchRequest(
-//        entity: Note.entity(),
-//        sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)]
-//    ) var notes: FetchedResults<Note>
-    
     @FetchRequest(
         entity: Note.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)],
@@ -24,12 +18,16 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-//                if viewModel.editing {
                     if let note = viewModel.selectedNote {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                viewModel.clearSelectNote()
+                            }
+                            .zIndex(1)
                         NoteEditing(noteID: note.objectID, deleteNote: viewModel.deleteNote, deleteSelectNote: viewModel.clearSelectNote)
-                                .zIndex(1)
+                            .zIndex(2)
                     }
-//                }
                     VStack {
                         VStack(alignment: .leading) {
                             Text("Задачи")
@@ -53,12 +51,10 @@ struct HomeView: View {
                         }
                         .padding(.horizontal, 20)
                         
-                        BottomBar(notesCount: notes.count, deleteSelectNote: viewModel.clearSelectNote)
+                        BottomBar(notesCount: notes.count)
                     }
-                    .navigationBarBackButtonHidden()
                     .background(.appBackground)
                     .blur(radius: CGFloat(viewModel.blurValue))
-                
             }
         }
     }

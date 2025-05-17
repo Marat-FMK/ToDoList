@@ -10,7 +10,6 @@ import SwiftUI
 struct BottomBar: View {
     let notesCount: Int
     @State var presentDetail = false
-    let deleteSelectNote: () -> Void
     
     var body: some View {
         Spacer()
@@ -20,7 +19,7 @@ struct BottomBar: View {
             HStack {
                 Spacer()
                 HStack {
-                    Text( String(notesCount))
+                    Text(String(notesCount))
                         .font(.system(size: 17))
                         .foregroundStyle(.appText)
                     Text("задач")
@@ -31,7 +30,7 @@ struct BottomBar: View {
                 Spacer()
                 
                 NavigationLink {
-                    DetailView(note: nil, deleteSelectNote: deleteSelectNote)
+                    DetailView(note: nil)
                 } label: {
                     Image(systemName: "square.and.pencil")
                         .resizable()
