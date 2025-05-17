@@ -27,7 +27,7 @@ struct NoteEditing: View {
                         .foregroundStyle(.appText)
                         .font(.system(size: 15))
                         .lineLimit(2)
-                    Text(note.date?.formatted() ?? "no date")
+                    Text(note.date?.toString() ?? "no date")
                         .foregroundStyle(.appDate)
                 }
                 .padding(15)

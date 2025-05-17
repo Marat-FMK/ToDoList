@@ -29,9 +29,10 @@ class HomeViewModel: ObservableObject {
     }
     
     func clearSelectNote() {
-        selectedNote = nil
-        blurValue = 0
-        print("clear selectNote")
+        withAnimation(.smooth) {
+            selectedNote = nil
+            blurValue = 0
+        }
     }
     
     func startRecodr() {}

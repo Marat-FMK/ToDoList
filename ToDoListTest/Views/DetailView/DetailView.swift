@@ -30,7 +30,7 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
             
-            Text("Время создания: \(viewModel.note?.date?.formatted() ?? Date.now.formatted())")
+            Text("Время создания: \(viewModel.note?.date?.toString() ?? Date.now.toString())")
                 .foregroundStyle(.appDate)
                 .font(.system(size: 17))
             
@@ -59,10 +59,12 @@ struct DetailView: View {
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                ToolbarButton(destiny: .back, title: "К заметкам", save: {}, dismiss: dismiss)
+                ToolbarButton(destiny: .back, title: "Заметки", save: {}, dismiss: dismiss)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                ToolbarButton(destiny: .save, title: "Сохранить", save: viewModel.createNote, dismiss: dismiss)
+                if !viewModel.title.isEmpty {
+                    ToolbarButton(destiny: .save, title: "Сохранить", save: viewModel.createNote, dismiss: dismiss)
+                }
             }
         }
     }

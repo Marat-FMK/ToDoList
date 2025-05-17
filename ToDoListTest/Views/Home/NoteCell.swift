@@ -46,7 +46,7 @@ struct NoteCell: View {
                         .foregroundStyle(note.completed ? .appDate : .appText)
                         .lineLimit(2)
 
-                    Text(note.date?.formatted(date: .complete, time: .omitted) ?? "no date")
+                    Text(note.date?.toString() ?? "no date")
                         .foregroundStyle(.appDate)
                 }
                 .background {
