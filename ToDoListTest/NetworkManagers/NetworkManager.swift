@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-final class NetworkManager {
+class NetworkManager {
     
-    private let link: String = "https://dummyjson.com/todos"
+    private let url: String = "https://dummyjson.com/todos"
     
     init() { fetchNotes() }
     
     private func fetchNotes() {
-        guard let url = URL(string: link) else { print("Error - bad url"); return }
+        guard let url = URL(string: url) else { print("Error - bad url"); return }
         
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard error == nil else { print("Error - request"); return }
@@ -33,5 +33,4 @@ final class NetworkManager {
             }
         }.resume()
     }
-    
 }

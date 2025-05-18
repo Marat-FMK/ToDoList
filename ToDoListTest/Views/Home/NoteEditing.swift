@@ -14,7 +14,7 @@ struct NoteEditing: View {
     let noteID: NSManagedObjectID
     let deleteNote: (Note) -> Void
     let deleteSelectNote: () -> Void
-
+    
     var body: some View {
         VStack {
             Spacer()
@@ -37,14 +37,14 @@ struct NoteEditing: View {
                         .foregroundStyle(.appBottomBar)
                 }
                 .padding(20)
-
+                
                 NoteEditingButtons(note: note, deleteNote: deleteNote, deleteSelectNote: deleteSelectNote)
             }
             Spacer()
         }
         .onAppear (perform: fetchNote)
     }
-
+    
     private func fetchNote() {
         do {
             note = try context.existingObject(with: noteID) as? Note

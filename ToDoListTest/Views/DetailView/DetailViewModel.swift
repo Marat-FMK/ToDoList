@@ -33,4 +33,7 @@ class DetailViewModel: ObservableObject {
         self.text = note.text
     }
     
+    func checkEmpty() -> Bool {
+        !title.isEmpty || !text.isEmpty ? true : false
+    }
 }

@@ -19,19 +19,19 @@ struct ToolbarButton: View {
     let dismiss: DismissAction
     
     var body: some View {
-            Button {
-                if destiny == .save {
-                    save()
-                    dismiss()
-                } else {
-                        dismiss()
-                    }
-            } label: {
-                    Text(title)
-                        .font(.system(size: 22))
+        Button {
+            if destiny == .save {
+                save()
+                dismiss()
+            } else {
+                dismiss()
             }
-            .buttonStyle(.plain)
-            .foregroundStyle(.appCheckMark)
+        } label: {
+            Text(title)
+                .font(.system(size: 22))
         }
+        .buttonStyle(.plain)
+        .foregroundStyle(.appCheckMark)
     }
+}
 

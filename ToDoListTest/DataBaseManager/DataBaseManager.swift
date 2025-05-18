@@ -8,24 +8,24 @@
 import Foundation
 import CoreData
 
-final class DataBaseManager {
+class DataBaseManager {
     
     static let shared = DataBaseManager()
     
     let container: NSPersistentContainer
     var context: NSManagedObjectContext {
-                   container.viewContext
-               }
-
+        container.viewContext
+    }
+    
     private init() {
-               container = NSPersistentContainer(name: "Note")
-               container.loadPersistentStores { description, error in
-                   if let error = error {
-                       fatalError("Error -loading: \(error.localizedDescription)")
-                   }
-               }
-               container.viewContext.automaticallyMergesChangesFromParent = true
-           }
+        container = NSPersistentContainer(name: "Note")
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                fatalError("Error -loading: \(error.localizedDescription)")
+            }
+        }
+        container.viewContext.automaticallyMergesChangesFromParent = true
+    }
     
     func saveContext() {
         let context = context
@@ -60,21 +60,21 @@ extension DataBaseManager {
     }
     
     func updateNoteStatus(note: Note) {
-            let id = note.objectID
-            container.performBackgroundTask { context in
-                do {
-                    let noteInBackground = try context.existingObject(with: id) as? Note
-                    noteInBackground?.completed.toggle()
-                    try context.save()
-                    DispatchQueue.main.async {
-                                   let mainNote = try? self.context.existingObject(with: id) as? Note
-                                   mainNote.map { self.context.refresh($0, mergeChanges: true) }
-                               }
-                } catch {
-                    print("Error - error update status \(error)")
+        let id = note.objectID
+        container.performBackgroundTask { context in
+            do {
+                let noteInBackground = try context.existingObject(with: id) as? Note
+                noteInBackground?.completed.toggle()
+                try context.save()
+                DispatchQueue.main.async {
+                    let mainNote = try? self.context.existingObject(with: id) as? Note
+                    mainNote.map { self.context.refresh($0, mergeChanges: true) }
                 }
+            } catch {
+                print("Error - error update status \(error)")
             }
         }
+    }
     
     func deleteNote(note: Note) {
         let id = note.objectID

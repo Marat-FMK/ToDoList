@@ -30,7 +30,7 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
             
-            Text("Время создания: \(viewModel.note?.date?.toString() ?? Date.now.toString())")
+            Text("Дата создания: \(viewModel.note?.date?.toString() ?? Date.now.toString())")
                 .foregroundStyle(.appDate)
                 .font(.system(size: 17))
             
@@ -47,7 +47,7 @@ struct DetailView: View {
                     .foregroundStyle(.appText)
                     .background(.appBackground)
                     .padding(10)
-                    
+                
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
@@ -62,7 +62,7 @@ struct DetailView: View {
                 ToolbarButton(destiny: .back, title: "Заметки", save: {}, dismiss: dismiss)
             }
             ToolbarItem(placement: .topBarTrailing) {
-                if !viewModel.title.isEmpty {
+                if viewModel.checkEmpty() {
                     ToolbarButton(destiny: .save, title: "Сохранить", save: viewModel.createNote, dismiss: dismiss)
                 }
             }

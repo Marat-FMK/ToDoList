@@ -53,5 +53,4 @@ class HomeViewModel: ObservableObject {
             db.deleteNote(note: note)
         }
     }
- 
 }
