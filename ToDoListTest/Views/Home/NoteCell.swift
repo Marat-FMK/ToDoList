@@ -51,6 +51,7 @@ struct NoteCell: View {
                 }
                 .background {
                     RoundedRectangle(cornerRadius: 16)
+                        .foregroundStyle(.appBackground)
                 }
                 .onTapGesture {
                     withAnimation {
