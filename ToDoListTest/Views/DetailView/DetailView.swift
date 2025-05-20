@@ -55,7 +55,7 @@ struct DetailView: View {
                         .scrollContentBackground(.hidden)
                         .focused($fieldInFocus)
                         .foregroundStyle(.appText)
-                        .background(.appBackground)
+                        .background(.appBackGround)
                         .padding(10)
                     
                 }
@@ -66,7 +66,7 @@ struct DetailView: View {
         }
         .onDisappear(perform: viewModel.updateNote)
         .padding(20)
-        .background(.appBackground)
+        .background(.appBackGround)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

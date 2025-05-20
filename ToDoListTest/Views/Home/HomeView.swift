@@ -55,7 +55,7 @@ struct HomeView: View {
                     
                     BottomBar(notesCount: notes.count)
                 }
-                .background(.appBackground)
+                .background(.appBackGround)
                 .blur(radius: CGFloat(viewModel.blurValue))
                 .contentShape(Rectangle())
                 .onTapGesture {

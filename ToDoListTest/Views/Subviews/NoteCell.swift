@@ -59,7 +59,7 @@ struct NoteCell: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(.appBackground)
+                    .foregroundStyle(.appBackGround)
             }
             Spacer()
         }
