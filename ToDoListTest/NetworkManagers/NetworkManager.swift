@@ -15,7 +15,7 @@ class NetworkManager {
     init() { fetchNotes() }
     
     private func fetchNotes() {
-        guard let url = URL(string: url) else { print("Error - bad url"); return }
+        guard let url = URL(string: url) else { print("Error - bad url "); return }
         
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard error == nil else { print("Error - request"); return }
