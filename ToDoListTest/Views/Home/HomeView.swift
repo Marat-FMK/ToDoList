@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
+    @FocusState var isSearchFieldFocused: Bool
     @FetchRequest(
         entity: Note.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \Note.date, ascending: false)],
@@ -22,6 +23,7 @@ struct HomeView: View {
                     Color.clear
                         .contentShape(Rectangle())
                         .onTapGesture {
+                            isSearchFieldFocused = false
                             viewModel.clearSelectNote()
                         }
                         .zIndex(1)
@@ -35,7 +37,7 @@ struct HomeView: View {
                             .font(.system(size: 40))
                             .bold()
                         
-                        SearchTextField(searchText: $viewModel.searchText, search: viewModel.searchNote, activateRecord: viewModel.startRecodr, clearSearchText: viewModel.clearSearchText)
+                        SearchTextField(searchText: $viewModel.searchText, fieldInFocused: $isSearchFieldFocused, search: viewModel.searchNote, activateRecord: viewModel.startRecodr, clearSearchText: viewModel.clearSearchText)
                         
                         ScrollView {
                             if viewModel.searchedNotes.isEmpty && viewModel.searchText.isEmpty {
@@ -55,6 +57,10 @@ struct HomeView: View {
                 }
                 .background(.appBackground)
                 .blur(radius: CGFloat(viewModel.blurValue))
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isSearchFieldFocused = false
+                }
             }
         }
     }

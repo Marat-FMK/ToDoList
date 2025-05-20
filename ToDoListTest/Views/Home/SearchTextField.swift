@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SearchTextField: View {
     @Binding var searchText: String
+//    @Binding var isFocused: Bool
+    @FocusState.Binding var fieldInFocused: Bool
     let search: () -> Void
     let activateRecord: () -> Void
     let clearSearchText: () -> Void
@@ -32,6 +34,7 @@ struct SearchTextField: View {
                 
                 TextField("", text: $searchText, prompt: Text(searchText == "" ? "Search" : searchText).foregroundStyle(.appDate))
                     .foregroundStyle(.appDate)
+                    .focused($fieldInFocused)
                     .onChange(of: searchText) {
                         search()
                     }
@@ -64,9 +67,12 @@ struct SearchTextField: View {
         }
         .frame(height: 36)
         .padding(.bottom, 10)
+//        .onChange(of: isFocused) { oldValue, newValue in
+//            fieldInFocused = newValue
+//        }
     }
 }
 
-#Preview {
-    SearchTextField(searchText: .constant(""), search: { print("start search") }, activateRecord: { print("start record")}, clearSearchText: { print ("clear text")} )
-}
+//#Preview {
+//    SearchTextField(searchText: .constant(""), fieldInFocused: .constant(false), search: { print("start search") }, activateRecord: { print("start record")}, clearSearchText: { print ("clear text")} )
+//}
