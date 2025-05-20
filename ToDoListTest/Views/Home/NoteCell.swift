@@ -11,6 +11,7 @@ import CoreData
 
 struct NoteCell: View {
     @ObservedObject var note: Note
+    @FocusState.Binding var fieldInFocused: Bool
     let updateNoteStatus: (Note) -> Void
     let selectNote: (Note) -> Void
     
@@ -55,6 +56,7 @@ struct NoteCell: View {
                 }
                 .onTapGesture {
                     withAnimation {
+                        fieldInFocused = false
                         selectNote(note)
                     }
                 }

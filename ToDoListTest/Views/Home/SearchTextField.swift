@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SearchTextField: View {
     @Binding var searchText: String
-//    @Binding var isFocused: Bool
     @FocusState.Binding var fieldInFocused: Bool
     let search: () -> Void
     let activateRecord: () -> Void
@@ -41,6 +40,7 @@ struct SearchTextField: View {
                 
                 if !searchText.isEmpty {
                     Button {
+                        fieldInFocused = false
                         clearSearchText()
                     } label: {
                         Image(systemName: "xmark")
@@ -67,9 +67,6 @@ struct SearchTextField: View {
         }
         .frame(height: 36)
         .padding(.bottom, 10)
-//        .onChange(of: isFocused) { oldValue, newValue in
-//            fieldInFocused = newValue
-//        }
     }
 }
 

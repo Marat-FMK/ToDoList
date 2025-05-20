@@ -42,11 +42,11 @@ struct HomeView: View {
                         ScrollView {
                             if viewModel.searchedNotes.isEmpty && viewModel.searchText.isEmpty {
                                 ForEach(notes) { note in
-                                    NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus, selectNote: viewModel.selectNote)
+                                    NoteCell(note: note, fieldInFocused: $isSearchFieldFocused, updateNoteStatus: viewModel.updateNoteStatus, selectNote: viewModel.selectNote)
                                 }
                             } else {
                                 ForEach(viewModel.searchedNotes) { note in
-                                    NoteCell(note: note, updateNoteStatus: viewModel.updateNoteStatus, selectNote: viewModel.selectNote)
+                                    NoteCell(note: note, fieldInFocused: $isSearchFieldFocused, updateNoteStatus: viewModel.updateNoteStatus, selectNote: viewModel.selectNote)
                                 }
                             }
                         }

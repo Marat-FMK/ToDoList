@@ -12,6 +12,7 @@ struct NoteEditingButtons: View {
     let deleteNote: (Note) -> Void
     let deleteSelectNote: () -> Void
     @State private var presentDetail = false
+    @State private var presentShare = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -22,9 +23,13 @@ struct NoteEditingButtons: View {
             }
             
             Divider()
-            ShareLink( item: "Задача - \(note.title),  \(note.text)") {
+            
+            Button {
+                presentShare = true
+            } label: {
                 EditingButtonLabel(title: "Поделиться", imageName: "square.and.arrow.up", color: .black)
             }
+            
             Divider()
             
             Button {
@@ -35,7 +40,16 @@ struct NoteEditingButtons: View {
         }
         .sheet(isPresented: $presentDetail,
                onDismiss: withAnimation(.bouncy) { deleteSelectNote },
-               content: { DetailView(note: note) })
+               content: { DetailView(note: note)
+                .presentationDragIndicator(.visible)
+        })
+        .sheet(isPresented: $presentShare, onDismiss: {
+            deleteSelectNote()
+        }, content: {
+            ShareLinkDismissable(items: ["Задача - \(note.title), \(note.text)"], onDismiss: deleteSelectNote)
+                .presentationDetents([.medium,.large])
+                .presentationDragIndicator(.visible)
+        })
         .padding(20)
         .background {
             RoundedRectangle(cornerRadius: 16).foregroundStyle(.appSearchItems)
@@ -43,3 +57,5 @@ struct NoteEditingButtons: View {
         .padding(.horizontal, 50)
     }
 }
+
+
