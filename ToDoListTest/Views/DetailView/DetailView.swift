@@ -24,46 +24,46 @@ struct DetailView: View {
                 .onTapGesture {
                     fieldInFocus = false
                 }
-        VStack(alignment: .leading, spacing: 10) {
-            TextField("", text: $viewModel.title,
-                      prompt: Text("Введите заголовок")
-                .foregroundStyle(.appDate)
+            VStack(alignment: .leading, spacing: 10) {
+                TextField("", text: $viewModel.title,
+                          prompt: Text("Введите заголовок")
+                    .foregroundStyle(.appDate)
+                    .font(.system(size: 25))
+                )
+                .foregroundStyle(.appText)
                 .font(.system(size: 25))
-            )
-            .foregroundStyle(.appText)
-            .font(.system(size: 30))
-            .bold()
-            .focused($fieldInFocus)
-            .padding(10)
-            .overlay {
-                RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
-            }
-            
-            Text("Дата создания: \(viewModel.note?.date?.toString() ?? Date.now.toString())")
-                .foregroundStyle(.appDate)
-                .font(.system(size: 17))
-            
-            ZStack(alignment: .topLeading) {
-                if viewModel.text.isEmpty {
-                    Text("Введите текст")
-                        .foregroundStyle(.appDate)
-                        .font(.system(size: 25))
-                        .padding(10)
-                        .zIndex(1)
+                .bold()
+                .focused($fieldInFocus)
+                .padding(10)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
                 }
-                TextEditor(text: $viewModel.text)
-                    .scrollContentBackground(.hidden)
-                    .focused($fieldInFocus)
-                    .foregroundStyle(.appText)
-                    .background(.appBackground)
-                    .padding(10)
                 
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
+                Text("Дата создания: \(viewModel.note?.date?.toString() ?? Date.now.toString())")
+                    .foregroundStyle(.appDate)
+                    .font(.system(size: 17))
+                
+                ZStack(alignment: .topLeading) {
+                    if viewModel.text.isEmpty {
+                        Text("Введите текст")
+                            .foregroundStyle(.appDate)
+                            .font(.system(size: 25))
+                            .padding(10)
+                            .zIndex(1)
+                    }
+                    TextEditor(text: $viewModel.text)
+                        .scrollContentBackground(.hidden)
+                        .focused($fieldInFocus)
+                        .foregroundStyle(.appText)
+                        .background(.appBackground)
+                        .padding(10)
+                    
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
+                }
             }
         }
-    }
         .onDisappear(perform: viewModel.updateNote)
         .padding(20)
         .background(.appBackground)
