@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailView: View {
     @StateObject var viewModel: DetailViewModel
+    @FocusState private var fieldInFocus: Bool
     @Environment(\.dismiss) var dismiss
     
     init(note: Note?) {
@@ -16,6 +17,13 @@ struct DetailView: View {
     }
     
     var body: some View {
+        ZStack {
+            Color.clear
+                .contentShape(Rectangle())
+                .ignoresSafeArea()
+                .onTapGesture {
+                    fieldInFocus = false
+                }
         VStack(alignment: .leading, spacing: 10) {
             TextField("", text: $viewModel.title,
                       prompt: Text("Введите заголовок")
@@ -25,6 +33,7 @@ struct DetailView: View {
             .foregroundStyle(.appText)
             .font(.system(size: 30))
             .bold()
+            .focused($fieldInFocus)
             .padding(10)
             .overlay {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
@@ -44,6 +53,7 @@ struct DetailView: View {
                 }
                 TextEditor(text: $viewModel.text)
                     .scrollContentBackground(.hidden)
+                    .focused($fieldInFocus)
                     .foregroundStyle(.appText)
                     .background(.appBackground)
                     .padding(10)
@@ -53,19 +63,21 @@ struct DetailView: View {
                 RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 1).foregroundStyle(.appDate)
             }
         }
+    }
         .onDisappear(perform: viewModel.updateNote)
         .padding(20)
         .background(.appBackground)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                ToolbarButton(destiny: .back, title: "Заметки", save: {}, dismiss: dismiss)
+                ToolbarButton(destiny: .back, title: "Заметки", icon: "chevron.left", save: {}, dismiss: dismiss)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.checkEmpty() {
-                    ToolbarButton(destiny: .save, title: "Сохранить", save: viewModel.createNote, dismiss: dismiss)
+                    ToolbarButton(destiny: .save, title: "Сохранить", icon: nil, save: viewModel.createNote, dismiss: dismiss)
                 }
             }
         }
     }
 }
+

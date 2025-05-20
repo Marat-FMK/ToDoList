@@ -15,6 +15,7 @@ enum ButtonDestiny {
 struct ToolbarButton: View {
     let destiny: ButtonDestiny
     let title: String
+    let icon: String?
     let save: () -> Void
     let dismiss: DismissAction
     
@@ -27,6 +28,12 @@ struct ToolbarButton: View {
                 dismiss()
             }
         } label: {
+            if let icon = icon {
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 22)
+            }
             Text(title)
                 .font(.system(size: 22))
         }
