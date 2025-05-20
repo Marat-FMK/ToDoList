@@ -16,27 +16,15 @@ struct NoteEditingButtons: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Button {
-                presentDetail.toggle()
-            } label: {
-                EditingButtonLabel(title: "Редактировать", imageName: "square.and.pencil", color: .black)
-            }
+            EditingButton(present: $presentDetail, title: "Редактировать", imageName: "square.and.pencil", color: .black)
+            
+            Divider()
+
+            EditingButton(present: $presentShare, title: "Поделиться", imageName: "square.and.arrow.up", color: .black)
             
             Divider()
             
-            Button {
-                presentShare = true
-            } label: {
-                EditingButtonLabel(title: "Поделиться", imageName: "square.and.arrow.up", color: .black)
-            }
-            
-            Divider()
-            
-            Button {
-                deleteNote(note)
-            } label: {
-                EditingButtonLabel(title: "Удалить", imageName: "trash", color: .red)
-            }
+            EditingDeleteButton(note: note, title: "Удалить", imageName: "trash", color: .red, deleteAction: deleteNote)
         }
         .sheet(isPresented: $presentDetail,
                onDismiss: withAnimation(.bouncy) { deleteSelectNote },
@@ -46,7 +34,7 @@ struct NoteEditingButtons: View {
         .sheet(isPresented: $presentShare, onDismiss: {
             deleteSelectNote()
         }, content: {
-            ShareLinkDismissable(items: ["Задача - \(note.title), \(note.text)"], onDismiss: deleteSelectNote)
+            ShareLinkDismissable(items: [" ☑️ Задача - \(note.title), \(note.text)"], onDismiss: deleteSelectNote)
                 .presentationDetents([.medium,.large])
                 .presentationDragIndicator(.visible)
         })

@@ -70,7 +70,7 @@ struct DetailView: View {
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                ToolbarButton(destiny: .back, title: "Заметки", icon: "chevron.left", save: {}, dismiss: dismiss)
+                ToolbarButton(destiny: .back, title: "Задачи", icon: "chevron.left", save: {}, dismiss: dismiss)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if viewModel.checkEmpty() {
