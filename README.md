@@ -19,7 +19,7 @@
 Реализован мгновенный поиск по тексту заметок и поддержка быстрой навигации через боковую прокрутку.
 
 ## 🛠️ Технологии
-Swift 6, IOS 18.0+, ГIKit, SwiftUI, MVVM, AppStorage/ UserDefaults, CoreData, URLSession, API, JSON
+Swift 6, IOS 18.0+, UIKit, SwiftUI, MVVM, AppStorage/ UserDefaults, CoreData, URLSession, API, JSON
 
 ## 📂Clone the repository:
    ```bash
